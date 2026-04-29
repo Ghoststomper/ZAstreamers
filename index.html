@@ -52,10 +52,10 @@
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px; 
-            max-width: 1200px; 
+            max-width: 6000px; 
             margin: 0 auto;
             position: relative;
-            z-index: 3;
+            z-index: 4;
         }
         .card {
             background: #1a1a1a; 
@@ -100,11 +100,11 @@
     <div class="overlay">
         <h1>🇿🇦 Streamers Hub</h1>
         <p class="subtitle">From the bush to the stream — meet the legends keeping Mzansi entertained</p>
-        
+        <p class="heading">Card order is randomised on each page load - tap F5 or click refresh button, background stops moving when no mouse movement is detected, it didnt freeze</p>        
         <div class="grid" id="streamer-grid">
             <!-- Cards will be inserted here by JavaScript -->
         </div>
-		        <p style="text-align:center; margin-top:60px; color:#666; font-size:0.9rem;">
+		<p style="text-align:center; margin-top:60px; color:#666; font-size:0.9rem;">
             Made with ❤️ for South African creators • Braai and Biltong recommended
         </p>
     </div>
@@ -180,12 +180,12 @@
             requestAnimationFrame(animate);
         }
 
-        // ==================== RANDOM CARD ORDER ====================
+        // ==================== STREAMERS DATA ====================
         const streamers = [
             {
                 name: "Whistler__",
                 img: "https://static-cdn.jtvnw.net/jtv_user_pictures/fd349aeb-8bef-4cee-9a67-f7ccb6905a0d-profile_image-300x300.png",
-                desc: "Twitch variety gamer, tech enthusiast and 3D printing legend.",
+                desc: "Twitch variety gamer, tech enthusiast and 3D printing legend. Streamer IT Support",
                 link: "https://www.twitch.tv/whistler__",
                 platform: "Twitch"
             },
@@ -222,6 +222,35 @@
                 img: "https://yt3.googleusercontent.com/mCztsnhiX0NKUW-WaDBwup6oakRifDnwETZ2KO5G9GsqJ_paeJpVRDIcOARCbPMhOYpzbC8uEw=s160-c-k-c0x00ffffff-no-rj",
                 desc: "Expect witty banter, deep dives, and perspectives that actually stick with you.",
                 link: "https://www.youtube.com/@TheUpperRoom-TV",
+                platform: "YouTube"
+            },
+            // ==================== NEW ADDITIONS April 29th 2026 ====================
+            {
+                name: "Citizen Concerned",
+                img: "https://yt3.googleusercontent.com/rr51wYezByzVMGV8soqENXFMwiqgIz8FhssVQPC4T3hSeXr3KqFG_pcJ7ysPpOlcTEiPH4KBdw=s160-c-k-c0x00ffffff-no-rj",
+                desc: "Fearless political commentary by Katlego Moagi. Unfiltered truth, facts first — cry later.",
+                link: "https://www.youtube.com/@CitizenConcerned",
+                platform: "YouTube"
+            },
+            {
+                name: "THEE Sama Sambit",
+                img: "https://yt3.googleusercontent.com/4TMI31IVhY106pz1aqNKcpQENIE855xEsjyziuw7qQ5EFcLkiikZb2VScO0YMedPLai--IaJ=s160-c-k-c0x00ffffff-no-rj",
+                desc: "Hard-hitting commentary on politics, culture and generational challenges.",
+                link: "https://www.youtube.com/@theesamasambit",
+                platform: "YouTube"
+            },
+            {
+                name: "MorningShot",
+                img: "https://yt3.googleusercontent.com/atwPbC1N-DsLEbNaSEE15UxJUAcwqcsOzmjl1NNy5xVnmDfT9OTYnd_mbRxz0epHKTJBwkTM7w=s160-c-k-c0x00ffffff-no-rj",
+                desc: "Daily news and analysis. Helping South Africans cut through the noise and stay informed.",
+                link: "https://www.youtube.com/@MorningShot",
+                platform: "YouTube"
+            },
+            {
+                name: "Conscious Caracal",
+                img: "https://yt3.googleusercontent.com/ytc/AIdro_n51z1GXtu5F9E7517wflObM-Ij9xGAaL7_Unq4czUT6Yg=s160-c-k-c0x00ffffff-no-rj",
+                desc: "Ernst van Zyl on SA realities. In-depth interviews, culture, politics & Afrikaner perspectives.",
+                link: "https://www.youtube.com/@ConsciousCaracal",
                 platform: "YouTube"
             }
         ];
