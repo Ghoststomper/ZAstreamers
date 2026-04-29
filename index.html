@@ -100,13 +100,16 @@
     <div class="overlay">
         <h1>🇿🇦 Streamers Hub</h1>
         <p class="subtitle">From the bush to the stream — meet the legends keeping Mzansi entertained</p>
-        <p class="heading">Card order is randomised on each page load - tap F5 or click refresh button, background stops moving when no mouse movement is detected, it didnt freeze</p>        
+		<p style="text-align:center; margin-top:1px; margin-bottom:10px; color:#FFFF00; font-size:0.9rem;">
+            Card order is randomised on each page load - tap F5 or click refresh button, background stops moving when no mouse movement is detected, it didnt freeze
+        </p>      
         <div class="grid" id="streamer-grid">
             <!-- Cards will be inserted here by JavaScript -->
         </div>
 		<p style="text-align:center; margin-top:60px; color:#666; font-size:0.9rem;">
             Made with ❤️ for South African creators • Braai and Biltong recommended
         </p>
+		
     </div>
 
     <script>
@@ -180,7 +183,7 @@
             requestAnimationFrame(animate);
         }
 
-        // ==================== STREAMERS DATA ====================
+        // ==================== Original STREAMERS DATA ====================
         const streamers = [
             {
                 name: "Whistler__",
@@ -199,7 +202,7 @@
             {
                 name: "Recon1 Outdoors",
                 img: "https://yt3.googleusercontent.com/XZYSzNeYl6mcj8bVkpLzDrKLoaZcNNUocMLEpZnL6mx4HO9pLwcKK__9BVw_j_2uWn-f8-5Qfw=s160-c-k-c0x00ffffff-no-rj",
-                desc: "Solo camping, off-road adventures and real bush life content.",
+                desc: "Cinematic take on real moments, off-road adventures and real bush life content.",
                 link: "https://www.youtube.com/@Recon1Outdoors",
                 platform: "YouTube"
             },
@@ -252,7 +255,21 @@
                 desc: "Ernst van Zyl on SA realities. In-depth interviews, culture, politics & Afrikaner perspectives.",
                 link: "https://www.youtube.com/@ConsciousCaracal",
                 platform: "YouTube"
-            }
+            },
+			{
+                name: "Riaan Roux",
+                img: "https://yt3.googleusercontent.com/_hiLJo-QaUOVBPZw67rnisImTJBBBNrxs4K7u4xE7CKtyHhomVU5P9DQgZpRtO8xDwi6Uyh7vQ=s160-c-k-c0x00ffffff-no-rj",
+                desc: "Independent commentary on SA politics, business, finance, technology & cyber security.",
+                link: "https://www.youtube.com/@RiaanRoux",
+                platform: "YouTube"
+            },
+            {
+                name: "Colonel Chris Wyatt",
+                img: "https://yt3.googleusercontent.com/Vp1jMtNOqSkuXHVMbKjFXM3kuhs5jtufuzveml4ClxZaBnO32l_RyfAoZ-nYtUYqF-vYW3gs=s160-c-k-c0x00ffffff-no-rj",  
+                desc: "Analysis on SA and global events, with strong focus on refugee issues and Afrikaner realities.",
+                link: "https://www.youtube.com/@ColonelChrisWyatt",
+                platform: "YouTube"
+            },
         ];
 
         function shuffle(array) {
