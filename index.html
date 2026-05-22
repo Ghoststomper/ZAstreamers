@@ -63,11 +63,13 @@
             overflow: hidden;
             transition: all 0.3s; 
             border: 2px solid #ffcc00;
+            cursor: grab;
         }
         .card:hover { 
             transform: translateY(-10px); 
             box-shadow: 0 20px 30px rgba(255,204,0,0.3); 
         }
+        .card:active { cursor: grabbing; }
         .card-img {
             height: 180px;
             background: #000;
@@ -100,16 +102,18 @@
     <div class="overlay">
         <h1>🇿🇦 Streamers Hub</h1>
         <p class="subtitle">From the bush to the stream — meet the legends keeping Mzansi entertained</p>
-		<p style="text-align:center; margin-top:1px; margin-bottom:10px; color:#FFFF00; font-size:0.9rem;">
-            Card order is randomised on each page load - tap F5 or click refresh button, background stops moving when no mouse movement is detected, it didnt freeze
-        </p>      
+        
+        <p style="text-align:center; margin: 10px 0; color:#FFFF00; font-size:0.9rem;">
+            Drag cards to reorder • Your order is saved automatically
+        </p>
+
         <div class="grid" id="streamer-grid">
-            <!-- Cards will be inserted here by JavaScript -->
+            <!-- Cards inserted by JS -->
         </div>
-		<p style="text-align:center; margin-top:60px; color:#666; font-size:0.9rem;">
+
+        <p style="text-align:center; margin-top:60px; color:#666; font-size:0.9rem;">
             Made with ❤️ for South African creators • Braai and Biltong recommended
         </p>
-		
     </div>
 
     <script>
@@ -126,40 +130,22 @@
         }
 
         class Particle {
-            constructor() { this.reset(); }
-            reset() {
+            constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 1.1 + 0.7;
-                this.speedX = Math.random() * 0.35 - 0.175;
-                this.speedY = Math.random() * 0.35 - 0.175;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
             }
             update() {
-                const now = Date.now();
-                const idleTime = now - mouse.lastMove;
-                let damping = 1;
-                if (idleTime > 1000) {
-                    damping = Math.max(0.02, 1 - (idleTime - 1000) / 10000);
-                }
+                this.x += this.speedX;
+                this.y += this.speedY;
 
-                this.x += this.speedX * damping;
-                this.y += this.speedY * damping;
-
-                const dx = mouse.x - this.x;
-                const dy = mouse.y - this.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                if (distance < 500 && damping > 0.1) {
-                    this.speedX += dx / 80000;
-                    this.speedY += dy / 80000;
-                }
-
-                if (this.x < 0) this.x = canvas.width;
-                if (this.x > canvas.width) this.x = 0;
-                if (this.y < 0) this.y = canvas.height;
-                if (this.y > canvas.height) this.y = 0;
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
             }
             draw() {
-                ctx.fillStyle = `hsl(${hue}, 100%, 75%)`;
+                ctx.fillStyle = `hsl(${hue}, 80%, 70%)`;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
@@ -168,12 +154,16 @@
 
         function initParticles() {
             particles = [];
-            for (let i = 0; i < 400; i++) particles.push(new Particle());
+            const count = Math.min(300, Math.floor(window.innerWidth * window.innerHeight / 4000));
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle());
+            }
         }
 
         function animate() {
-            ctx.fillStyle = 'rgba(15, 15, 15, 0.12)';
+            ctx.fillStyle = 'rgba(15,15,15,0.08)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
+
             hue = (hue + 0.8) % 360;
 
             for (let p of particles) {
@@ -183,7 +173,7 @@
             requestAnimationFrame(animate);
         }
 
-        // ==================== Original STREAMERS DATA ====================
+        // ==================== STREAMERS DATA ====================
         const streamers = [
             {
                 name: "Whistler__",
@@ -209,7 +199,7 @@
             {
                 name: "Renaldo Gouws",
                 img: "https://yt3.googleusercontent.com/MI48-tI3CMmd1yPJrwXEfKU0CsuVYfRwomiEVFz0oir3BUFaUIXBbzfbdmkB8sY2Wdmwgblq=s160-c-k-c0x00ffffff-no-rj",
-                desc: "Leading political commentator in SA. Straight talk, zero filter. Available for interviews.",
+                desc: "Leading political commentator in SA. Straight talk, zero filter.",
                 link: "https://www.youtube.com/@RenaldoG",
                 platform: "YouTube"
             },
@@ -227,11 +217,10 @@
                 link: "https://www.youtube.com/@TheUpperRoom-TV",
                 platform: "YouTube"
             },
-            // ==================== NEW ADDITIONS April 29th 2026 ====================
             {
                 name: "Citizen Concerned",
                 img: "https://yt3.googleusercontent.com/rr51wYezByzVMGV8soqENXFMwiqgIz8FhssVQPC4T3hSeXr3KqFG_pcJ7ysPpOlcTEiPH4KBdw=s160-c-k-c0x00ffffff-no-rj",
-                desc: "Fearless political commentary by Katlego Moagi. Unfiltered truth, facts first — cry later.",
+                desc: "Fearless political commentary by Katlego Moagi. Unfiltered truth.",
                 link: "https://www.youtube.com/@CitizenConcerned",
                 platform: "YouTube"
             },
@@ -245,46 +234,58 @@
             {
                 name: "MorningShot",
                 img: "https://yt3.googleusercontent.com/atwPbC1N-DsLEbNaSEE15UxJUAcwqcsOzmjl1NNy5xVnmDfT9OTYnd_mbRxz0epHKTJBwkTM7w=s160-c-k-c0x00ffffff-no-rj",
-                desc: "Daily news and analysis. Helping South Africans cut through the noise and stay informed.",
+                desc: "Daily news and analysis. Helping South Africans cut through the noise.",
                 link: "https://www.youtube.com/@MorningShot",
                 platform: "YouTube"
             },
             {
                 name: "Conscious Caracal",
                 img: "https://yt3.googleusercontent.com/ytc/AIdro_n51z1GXtu5F9E7517wflObM-Ij9xGAaL7_Unq4czUT6Yg=s160-c-k-c0x00ffffff-no-rj",
-                desc: "Ernst van Zyl on SA realities. In-depth interviews, culture, politics & Afrikaner perspectives.",
+                desc: "Ernst van Zyl on SA realities. In-depth interviews & perspectives.",
                 link: "https://www.youtube.com/@ConsciousCaracal",
                 platform: "YouTube"
             },
-			{
+            {
                 name: "Riaan Roux",
                 img: "https://yt3.googleusercontent.com/_hiLJo-QaUOVBPZw67rnisImTJBBBNrxs4K7u4xE7CKtyHhomVU5P9DQgZpRtO8xDwi6Uyh7vQ=s160-c-k-c0x00ffffff-no-rj",
-                desc: "Independent commentary on SA politics, business, finance, technology & cyber security.",
+                desc: "Independent commentary on SA politics, business, finance & tech.",
                 link: "https://www.youtube.com/@RiaanRoux",
                 platform: "YouTube"
             },
             {
                 name: "Colonel Chris Wyatt",
-                img: "https://yt3.googleusercontent.com/Vp1jMtNOqSkuXHVMbKjFXM3kuhs5jtufuzveml4ClxZaBnO32l_RyfAoZ-nYtUYqF-vYW3gs=s160-c-k-c0x00ffffff-no-rj",  
-                desc: "Analysis on SA and global events, with strong focus on refugee issues and Afrikaner realities.",
+                img: "https://yt3.googleusercontent.com/Vp1jMtNOqSkuXHVMbKjFXM3kuhs5jtufuzveml4ClxZaBnO32l_RyfAoZ-nYtUYqF-vYW3gs=s160-c-k-c0x00ffffff-no-rj",
+                desc: "Analysis on SA and global events with focus on refugee issues.",
                 link: "https://www.youtube.com/@ColonelChrisWyatt",
                 platform: "YouTube"
             },
-			{
-				name: "DeathBedOfAWorm",
-				img: "https://static-cdn.jtvnw.net/jtv_user_pictures/b2a00147-2fc1-44bc-8539-b4d14a416b82-profile_image-300x300.png",
-				desc: "SA variety streamer and IT chaos enjoyer. Expect late night streams, random rants and good vibes.",
-				link: "https://www.twitch.tv/deathbedofaworm",
-				platform: "Twitch"
-			},
-						{
-				name: "HIGHnRICH",
-				img: "https://yt3.googleusercontent.com/ytc/AIdro_mH1cs2edOoKd3t6-8Co75isE5IJ472tsIzSYn89RCvGIo=s120-c-k-c0x00ffffff-no-rj",
-				desc: "Cape Town vibes, vlogs & good energy from Heinrich. Loves gaming and community",
-				link: "https://www.youtube.com/@HIGHnRICH",
-				platform: "YouTube"
-			},
+            {
+                name: "DeathBedOfAWorm",
+                img: "https://static-cdn.jtvnw.net/jtv_user_pictures/b2a00147-2fc1-44bc-8539-b4d14a416b82-profile_image-300x300.png",
+                desc: "SA variety streamer and IT chaos enjoyer. Expect late night streams.",
+                link: "https://www.twitch.tv/deathbedofaworm",
+                platform: "Twitch"
+            },
+            {
+                name: "HIGHnRICH",
+                img: "https://yt3.googleusercontent.com/ytc/AIdro_mH1cs2edOoKd3t6-8Co75isE5IJ472tsIzSYn89RCvGIo=s120-c-k-c0x00ffffff-no-rj",
+                desc: "Cape Town vibes, vlogs & good energy from Heinrich.",
+                link: "https://www.youtube.com/@HIGHnRICH",
+                platform: "YouTube"
+            }
         ];
+
+        // ==================== DRAG & DROP + SAVED ORDER ====================
+        const STORAGE_KEY = 'zaStreamersOrder';
+
+        function getSavedOrder() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            return saved ? JSON.parse(saved) : null;
+        }
+
+        function saveOrder(order) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(order));
+        }
 
         function shuffle(array) {
             return array.sort(() => Math.random() - 0.5);
@@ -294,12 +295,25 @@
             const grid = document.getElementById('streamer-grid');
             grid.innerHTML = '';
 
-            const shuffled = shuffle([...streamers]);
+            let orderedStreamers = [...streamers];
+            const savedOrder = getSavedOrder();
 
-            shuffled.forEach(s => {
+            if (savedOrder) {
+                orderedStreamers.sort((a, b) => {
+                    const indexA = savedOrder.indexOf(a.name);
+                    const indexB = savedOrder.indexOf(b.name);
+                    if (indexA === -1) return 1;
+                    if (indexB === -1) return -1;
+                    return indexA - indexB;
+                });
+            } else {
+                orderedStreamers = shuffle([...streamers]);
+            }
+
+            orderedStreamers.forEach(s => {
                 const cardHTML = `
-                    <div class="card">
-                        <div class="card-img"><img src="${s.img}" alt="${s.name}"></div>
+                    <div class="card" draggable="true" data-name="${s.name}">
+                        <div class="card-img"><img src="${s.img}" alt="${s.name}" loading="lazy"></div>
                         <div class="card-body">
                             <h2>${s.name}</h2>
                             <p>${s.desc}</p>
@@ -309,6 +323,71 @@
                 `;
                 grid.innerHTML += cardHTML;
             });
+
+            addDragListeners();
+        }
+
+        function addDragListeners() {
+            const cards = document.querySelectorAll('.card');
+
+            cards.forEach(card => {
+                card.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', card.dataset.name);
+                    card.style.opacity = '0.6';
+                });
+
+                card.addEventListener('dragend', () => {
+                    card.style.opacity = '1';
+                });
+
+                card.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    card.style.borderColor = '#ffd633';
+                    card.style.transform = 'scale(1.03)';
+                });
+
+                card.addEventListener('dragleave', () => {
+                    card.style.borderColor = '#ffcc00';
+                    card.style.transform = 'scale(1)';
+                });
+
+                card.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    const draggedName = e.dataTransfer.getData('text/plain');
+                    const targetName = card.dataset.name;
+
+                    if (draggedName === targetName) return;
+
+                    const currentOrder = Array.from(document.querySelectorAll('.card'))
+                        .map(c => c.dataset.name);
+
+                    const draggedIndex = currentOrder.indexOf(draggedName);
+                    const targetIndex = currentOrder.indexOf(targetName);
+
+                    currentOrder.splice(draggedIndex, 1);
+                    currentOrder.splice(targetIndex, 0, draggedName);
+
+                    saveOrder(currentOrder);
+                    renderCards();
+                });
+            });
+        }
+
+        // Reset button
+        function addResetButton() {
+            const resetBtn = document.createElement('button');
+            resetBtn.textContent = '🔄 Reset Order';
+            resetBtn.style.cssText = `
+                position: fixed; bottom: 25px; right: 25px; 
+                padding: 12px 20px; background: #ffcc00; color: #000; 
+                border: none; border-radius: 8px; font-weight: bold; 
+                cursor: pointer; z-index: 100; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            `;
+            resetBtn.onclick = () => {
+                localStorage.removeItem(STORAGE_KEY);
+                renderCards();
+            };
+            document.body.appendChild(resetBtn);
         }
 
         // Initialize everything
@@ -317,17 +396,12 @@
             initParticles();
             animate();
             renderCards();
-        });
+            addResetButton();
 
-        window.addEventListener('resize', () => {
-            resize();
-            initParticles();
-        });
-
-        window.addEventListener('mousemove', (e) => {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
-            mouse.lastMove = Date.now();
+            window.addEventListener('resize', () => {
+                resize();
+                initParticles();
+            });
         });
     </script>
 </body>
